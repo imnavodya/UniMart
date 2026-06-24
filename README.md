@@ -52,4 +52,3 @@ To test the application, you can use the following default accounts included in 
 - **Database**: MySQL / MariaDB
 
 ---
-*Created for a premium shopping experience.*
