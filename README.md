@@ -1,4 +1,4 @@
-# UniMart - Premium Marketplace
+# UniMart (NSBM Exclusive)
 
 UniMart is a sleek, modern, and premium e-commerce marketplace built specifically for university students. It features a beautiful dark glassmorphism design, real-time order tracking, and a robust admin panel.
 
