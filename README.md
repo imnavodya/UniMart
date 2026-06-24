@@ -47,8 +47,8 @@ To test the application, you can use the following default accounts included in 
 - **Password:** password123
 
 ## Tech Stack
-- **Frontend**: HTML5, Vanilla CSS (Custom Glassmorphism theme), JavaScript, Bootstrap 5.
-- **Backend**: PHP 8 (PDO)
+- **Frontend**: HTML5, Vanilla CSS, JavaScript, Bootstrap 5.
+- **Backend**: PHP
 - **Database**: MySQL / MariaDB
 
 ---
