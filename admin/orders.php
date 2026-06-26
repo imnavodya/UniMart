@@ -1,7 +1,6 @@
 <?php 
 require_once 'includes/header.php'; 
 
-// Fetch all orders
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 $whereClause = $searchQuery !== '' ? "WHERE o.id = :search OR u.name LIKE :searchLike" : "";
 
@@ -78,7 +77,6 @@ $orders = $stmt->fetchAll();
     </div>
 </div>
 
-<!-- Order Offcanvas -->
 <div class="offcanvas offcanvas-end border-0 shadow-lg" tabindex="-1" id="orderOffcanvas" style="width: 550px; background: var(--bg-2);">
     <div class="offcanvas-header border-bottom border-secondary border-opacity-25 p-4">
         <h5 class="offcanvas-title outfit fw-bold text-main" id="orderOffcanvasTitle">Order Details</h5>
@@ -114,7 +112,6 @@ $orders = $stmt->fetchAll();
                     </tr>
                 </thead>
                 <tbody id="offcanvasOrderItems">
-                    <!-- Items inserted via JS -->
                 </tbody>
                 <tfoot class="border-top border-secondary border-opacity-25" style="background: var(--bg-3);">
                     <tr>
@@ -150,13 +147,10 @@ function viewOrder(id) {
                 document.getElementById('offcanvasOrderId').textContent = '#UM-' + String(order.id).padStart(5, '0');
                 document.getElementById('offcanvasOrderDate').textContent = order.created_at_formatted;
                 document.getElementById('offcanvasOrderTotal').textContent = order.total_formatted;
-                
-                // Set static status badge for view mode
                 let badgeClass = order.status === 'completed' ? 'adm-badge-success' : (order.status === 'pending' ? 'adm-badge-warning' : 'adm-badge-danger');
                 document.getElementById('offcanvasStatusBadge').className = `adm-badge ${badgeClass} fw-bold`;
                 document.getElementById('offcanvasStatusBadge').textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
                 
-                // Items
                 let itemsHtml = '';
                 items.forEach(item => {
                     itemsHtml += `
@@ -203,7 +197,6 @@ function updateStatusQuick(orderId, newStatus, selectElement) {
         .then(data => {
             selectElement.disabled = false;
             if (data.success) {
-                // Update badge color classes based on new status
                 let newClass = 'form-select form-select-sm fw-bold border-0 shadow-none ';
                 if(newStatus === 'completed') newClass += 'bg-success text-success';
                 else if(newStatus === 'pending') newClass += 'bg-warning text-warning';
@@ -214,7 +207,7 @@ function updateStatusQuick(orderId, newStatus, selectElement) {
                 showToast('Order status updated instantly!', 'success');
             } else {
                 showToast(data.message || 'Failed to update status', 'error');
-                selectElement.className = originalClass; // Revert
+                selectElement.className = originalClass;
             }
         });
 }
