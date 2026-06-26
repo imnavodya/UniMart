@@ -12,7 +12,7 @@ UniMart is a sleek, modern, and premium e-commerce marketplace built specificall
 ## Installation & Setup
 
 1. **Clone the Repository**
-   Clone this repository into your local server environment (like XAMPP, WAMP, or MAMP) inside the `htdocs` or `www` directory.
+   Clone this repository into your local server environment (XAMPP) inside the `htdocs` or `www` directory.
 
 2. **Database Setup**
    - Create a new MySQL database named `unimart` (or a name of your choice).
