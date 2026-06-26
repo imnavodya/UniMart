@@ -1,7 +1,6 @@
 <?php 
 require_once 'includes/header.php'; 
 
-// Fetch all products
 $searchQuery = isset($_GET['search']) ? trim($_GET['search']) : '';
 $whereClause = $searchQuery !== '' ? "WHERE p.name LIKE :search OR c.name LIKE :search" : "";
 
@@ -19,8 +18,6 @@ if ($searchQuery !== '') {
     $stmt->execute();
 }
 $products = $stmt->fetchAll();
-
-// Fetch all categories for the dropdown
 $cats = $conn->query("SELECT id, name FROM categories ORDER BY name")->fetchAll();
 ?>
 
@@ -79,7 +76,6 @@ $cats = $conn->query("SELECT id, name FROM categories ORDER BY name")->fetchAll(
                     </td>
                 </tr>
                 <?php endforeach; ?>
-                
                 <?php if(empty($products)): ?>
                 <tr>
                     <td colspan="6" style="text-align:center;color:var(--text-muted);padding:40px;">No products found.</td>
@@ -90,7 +86,6 @@ $cats = $conn->query("SELECT id, name FROM categories ORDER BY name")->fetchAll(
     </div>
 </div>
 
-<!-- Product Modal -->
 <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content adm-panel border-0 p-0" style="background: var(--card-bg);">
@@ -176,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => showToast('An error occurred', 'error'));
     });
     
-    // Image Preview Logic
     document.getElementById('prodImage').addEventListener('change', function() {
         const file = this.files[0];
         const preview = document.getElementById('productImagePreview');
@@ -222,8 +216,8 @@ function openProductModal(prod = null) {
         document.getElementById('prodStock').value = '0';
         document.getElementById('prodDesc').value = '';
     }
-    document.getElementById('prodImage').value = ''; // Reset file input
-    resetImagePreview(); // Clear preview
+    document.getElementById('prodImage').value = '';
+    resetImagePreview();
     prodModal.show();
 }
 
