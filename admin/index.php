@@ -1,7 +1,6 @@
 <?php require_once __DIR__ . '/includes/header.php'; ?>
 
 <?php
-// ── Stats ────────────────────────────────────────────
 $totalProducts  = $conn->query("SELECT COUNT(*) FROM products")->fetchColumn();
 $totalOrders    = $conn->query("SELECT COUNT(*) FROM orders")->fetchColumn();
 $totalCustomers = $conn->query("SELECT COUNT(*) FROM users WHERE role='customer'")->fetchColumn();
@@ -27,8 +26,6 @@ $prodChange = getPercentChange($conn, 'products');
 $orderChange = getPercentChange($conn, 'orders');
 $custChange = getPercentChange($conn, 'users', 'created_at', null, "role='customer'");
 $revChange = getPercentChange($conn, 'orders', 'created_at', 'total_amount', "status != 'cancelled'");
-
-// Recent orders
 $recentOrders = $conn->query("
     SELECT o.*, u.name as customer_name 
     FROM orders o 
@@ -36,7 +33,6 @@ $recentOrders = $conn->query("
     ORDER BY o.created_at DESC LIMIT 5
 ")->fetchAll();
 
-// Chart data & Sparklines — last 7 days
 $sparkProducts = [];
 $sparkOrders = [];
 $sparkCustomers = [];
@@ -63,7 +59,6 @@ for ($i = 6; $i >= 0; $i--) {
     $chartData[] = $rev;
 }
 
-// Category distribution (Actual Sales Volume)
 $catDist = $conn->query("
     SELECT c.name, COALESCE(SUM(oi.quantity), 0) as count
     FROM categories c
@@ -76,7 +71,6 @@ $catDist = $conn->query("
 ")->fetchAll();
 ?>
 
-<!-- ── Stat Cards ──────────────────────────────── -->
 <div class="row g-3 mb-4">
     <?php
     $cards = [
@@ -115,7 +109,6 @@ $catDist = $conn->query("
     <?php endforeach; ?>
 </div>
 
-<!-- ── Charts Row ──────────────────────────────── -->
 <div class="row g-3 mb-4">
     <div class="col-lg-8">
         <div class="adm-panel h-100">
@@ -134,7 +127,6 @@ $catDist = $conn->query("
     </div>
 </div>
 
-<!-- ── Recent Orders ──────────────────────────── -->
 <div class="adm-panel">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="adm-panel-title mb-0">Recent Orders</div>
@@ -177,7 +169,6 @@ $catDist = $conn->query("
 </div>
 
 <script>
-// ── Sales Chart ──────────────────────────────────────
 const salesCtx = document.getElementById('salesChart').getContext('2d');
 new Chart(salesCtx, {
     type: 'line',
@@ -210,7 +201,6 @@ new Chart(salesCtx, {
     }
 });
 
-// ── Category Donut ───────────────────────────────────
 const catLabels = <?= json_encode(array_column($catDist, 'name')) ?>;
 const catCounts = <?= json_encode(array_column($catDist, 'count')) ?>;
 const catColors = ['#6C63FF','#00D4FF','#FF5BF1','#22C55E','#F59E0B','#8B5CF6'];
@@ -227,12 +217,11 @@ new Chart(document.getElementById('catChart').getContext('2d'), {
     }
 });
 
-// ── Sparklines ───────────────────────────────────────
 const sparklines = [
-    <?= json_encode($sparkProducts) ?>, // Products
-    <?= json_encode($sparkOrders) ?>,  // Orders
-    <?= json_encode($sparkCustomers) ?>, // Customers
-    <?= json_encode($sparkRevenue) ?> // Revenue
+    <?= json_encode($sparkProducts) ?>, 
+    <?= json_encode($sparkOrders) ?>,  
+    <?= json_encode($sparkCustomers) ?>, 
+    <?= json_encode($sparkRevenue) ?> 
 ];
 const cardColors = ['#6C63FF', '#00D4FF', '#22C55E', '#8B5CF6'];
 
@@ -251,8 +240,8 @@ sparklines.forEach((data, index) => {
                 fill: true,
                 backgroundColor: function(context) {
                     const g = context.chart.ctx.createLinearGradient(0, 0, 0, 50);
-                    g.addColorStop(0, cardColors[index] + '33'); // 20% opacity
-                    g.addColorStop(1, cardColors[index] + '00'); // 0% opacity
+                    g.addColorStop(0, cardColors[index] + '33');
+                    g.addColorStop(1, cardColors[index] + '00'); 
                     return g;
                 }
             }]
